@@ -18,23 +18,21 @@ class MovieListRepositoryImpl @Inject constructor(
     private val movieApi: MovieApi,
     private val movieDatabase : MovieDatabase
 ) : MovieListRepository{
-    
     override suspend fun getMovieList(
         forceFetchFromRemote: Boolean,
         category: String,
         page: Int
     ): Flow<Resource<List<Movie>>> {
         return flow {
+
             emit(Resource.Loading(true))
             val localMovieList = movieDatabase.movieDao.getMovieCategory(category = category)
-
             val shouldJustLoadFromCache = !forceFetchFromRemote && localMovieList.isNotEmpty()
 
             if (shouldJustLoadFromCache){
                 emit(Resource.Success(
                     data = localMovieList.map {movieEntity ->
                         movieEntity.toMovie(category)
-
                     }
                 ))
                 emit(Resource.Loading(false))
@@ -55,30 +53,23 @@ class MovieListRepositoryImpl @Inject constructor(
                 emit(Resource.Error("Error Loading Movies"))
                 return@flow
             }
-
             val movieEntities = movieListFromApi.results.let {
                 it.map { movieList->
                     movieList.toMovieEntity(category)
                 }
             }
-
             movieDatabase.movieDao.upsertMovieList(movieEntities)
-
             emit(
                 Resource.Success(
                     movieEntities.map { it.toMovie(category) }
                 )
             )
-
         }
     }
-
     override suspend fun getMovie(id: Int): Flow<Resource<Movie>> {
         return flow {
             emit(Resource.Loading(true))
-
             val movieEntity = movieDatabase.movieDao.getMovieById(id)
-
             if (movieEntity != null){
                 emit(
                     Resource.Success(movieEntity.toMovie(movieEntity.category))
@@ -86,7 +77,6 @@ class MovieListRepositoryImpl @Inject constructor(
                 emit(Resource.Loading(false))
                 return@flow
             }
-
             emit(Resource.Error(message = "Error no such item"))
             emit(Resource.Loading(false))
 
