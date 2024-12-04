@@ -1,55 +1,46 @@
 package com.example.movieapp.data
 
-import com.example.movieapp.data.local.movie.MovieEntity
-import com.example.movieapp.data.remote.respond.Genre
-import com.example.movieapp.data.remote.respond.ImageSet
+import com.example.movieapp.data.local.movie.model.MovieEntity
 import com.example.movieapp.data.remote.respond.MovieList
 import com.example.movieapp.domain.model.Movie
-import java.util.Locale.Category
+import com.example.movieapp.utils.JsonUtil
 
 
-fun MovieList.toMovieEntity(
-    category: String
-): MovieEntity {
+fun MovieList.toMovieEntity(showType: String): MovieEntity {
     return MovieEntity(
-        cast = this.cast?.joinToString(", ") ?: "", // Convert list to comma-separated string
-        directors = this.directors?.joinToString(", ") ?: "",
-        genres = this.genres?.joinToString(", ") { it.name } ?: "", // Convert Genre list to string
-        id = this.id ?: throw IllegalArgumentException("id cannot be null"),
-        imageSet = this.imageSet ?: throw IllegalArgumentException("imageSet cannot be null"),
-        imdbId = this.imdbId ?: "",
-        itemType = this.itemType ?: "",
-        originalTitle = this.originalTitle ?: "",
-        overview = this.overview ?: "",
-        rating = this.rating ?: 0,
-        releaseYear = this.releaseYear ?: 0,
-        runtime = this.runtime ?: 0,
-        showType = this.showType ?: "",
-        title = this.title ?: "",
-        tmdbId = this.tmdbId ?: "",
-        category = category
+        itemType = this.itemType,
+        showType = showType,
+        id = this.id,
+        imdbId = this.imdbId,
+        tmdbId = this.tmdbId,
+        title = this.title,
+        overview = this.overview,
+        releaseYear = this.releaseYear,
+        originalTitle = this.originalTitle,
+        genres = this.genres,
+        directors = JsonUtil.jsonToList(this.directors), // Convert JSON to list
+        cast = JsonUtil.jsonToList(this.cast),
+        rating = this.rating,
+        runtime = this.runtime,
+        imageSet = this.imageSet
     )
 }
-
-fun MovieEntity.toMovie(
-    category : String
-): Movie {
+fun MovieEntity.toMovie(showType: String): Movie {
     return Movie(
-        cast = this.cast.split(",").map { it.trim() }, // Split by comma and trim spaces
-        directors = this.directors.split(",").map { it.trim() }, // Split by comma and trim spaces
-        genres = this.genres.split(",").map { (it.trim()) }, // Split and map to Genre objects
-        id = this.id,
-        imageSet = this.imageSet,
-        imdbId = this.imdbId,
         itemType = this.itemType,
-        originalTitle = this.originalTitle,
-        overview = this.overview,
-        rating = this.rating,
-        releaseYear = this.releaseYear,
-        runtime = this.runtime,
-        showType = this.showType,
-        title = this.title,
+        showType = showType,
+        id = this.id,
+        imdbId = this.imdbId,
         tmdbId = this.tmdbId,
-        category = category
+        title = this.title,
+        overview = this.overview,
+        releaseYear = this.releaseYear,
+        originalTitle = this.originalTitle,
+        genres = this.genres,
+        directors = this.directors, // Room will handle conversion via TypeConverter
+        cast = this.cast,           // Room will handle conversion via TypeConverter
+        rating = this.rating,
+        runtime = this.runtime,
+        imageSet = this.imageSet
     )
 }

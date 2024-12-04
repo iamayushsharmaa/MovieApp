@@ -34,7 +34,7 @@ fun RatingBar(
         if (halfStar) {
             Icon(
                 modifier = starsModifier,
-                imageVector = Icons.Rounded.StarHalf,
+                imageVector = Icons.Rounded.Star,
                 contentDescription = null,
                 tint = starsColor
             )
@@ -42,7 +42,7 @@ fun RatingBar(
         repeat(unfilledStars) {
             Icon(
                 modifier = starsModifier,
-                imageVector = Icons.Rounded.StarOutline,
+                imageVector = Icons.Rounded.Star,
                 contentDescription = null,
                 tint = starsColor
             )

@@ -64,13 +64,19 @@ dependencies {
     implementation(libs.androidx.room.paging)
     implementation(libs.androidx.room.ktx)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
-    implementation (libs.androidx.material.icons.extended)
+ //   implementation (libs.androidx.material.icons.extended)
     implementation (libs.accompanist.systemuicontroller)
+    implementation(libs.logging.interceptor)
+
+    implementation (libs.kotlinx.coroutines.android)
+    implementation (libs.kotlinx.coroutines.core)
+
 
 
 

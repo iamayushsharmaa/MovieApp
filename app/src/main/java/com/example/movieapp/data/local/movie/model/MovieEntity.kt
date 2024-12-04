@@ -1,11 +1,15 @@
-package com.example.movieapp.domain.model
+package com.example.movieapp.data.local.movie.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.movieapp.data.remote.respond.Genre
 import com.example.movieapp.data.remote.respond.ImageSet
 
-data class Movie(
+@Entity
+data class MovieEntity(
     val itemType: String,
     val showType: String,
+    @PrimaryKey
     val id: String,
     val imdbId: String,
     val tmdbId: String,
